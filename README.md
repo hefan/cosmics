@@ -12,7 +12,7 @@ Each spectator can help with balloons to fight the invaders (or irritate the her
 
 The client consists of a hero-, a spectator- or a solo hero game. 
 If there is no server available the solo client game will start. 
-The solo client game features only simulator-like grpahics and no score.
+The solo client game features only simulator-like graphics and no score.
 
 #### Requirements
 
