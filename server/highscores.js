@@ -7,11 +7,32 @@ http.createServer(function (req, res) {
 
     var scoreList = [];
 
-    if (req.url != "/") { // "/favicon.ico" and other errornous requests will be ignored
+    if  (req.url == "/cumul") { // cumulated version
+        var player = "";
+        var points = "";
+        xy = redisClient.zrevrange("scores", "0", "-1", "WITHSCORES", function (err, replies) {
+            replies.forEach(function (reply, i) {
+                if ( (i%2) == 0) {  // the name in the even
+                    // first split is given name, second is session id, we need given name, split symbol is "_"
+                    player = reply.split("_")[0];
+                }
+                else { // the score in the odd
+                    points = reply;
+                    scoreList = addOrCumulPlayer(scoreList, player, points);
+                }
+            });
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+            scoreList.sort(function(a,b) { return b.points - a.points } );
+            res.write(JSON.stringify(scoreList));
+            res.end('\n');
+        });
+    }
+//--------------------------------------------------------------------------------------------------------------------------    
+    else if (req.url != "/") { // "/favicon.ico" and other errornous requests will be ignored
         res.writeHead(404);
         res.end('\n');
     }
-		else { // proper "/" request
+	else { // proper "/" request, normal not cumulated version
         xy = redisClient.zrevrange("scores", "0", "-1", "WITHSCORES", function (err, replies) {
             var scoreEntry = {};
             replies.forEach(function (reply, i) {
@@ -28,6 +49,18 @@ http.createServer(function (req, res) {
             res.write(JSON.stringify(scoreList));
             res.end('\n');
         });
-	  }
+    }
 }).listen(42424, "127.0.0.1");
 console.log('Server running at http://127.0.0.1:42424/');
+//--------------------------------------------------------------------------------------------------------------------------
+function addOrCumulPlayer(scoreList, player, points) {
+    for(var i = 0; i < scoreList.length; i++) {
+        if (scoreList[i].player == player) {
+            scoreList[i].points += parseInt(points);
+            return scoreList;
+        }
+    }
+    // nothing found, new player
+    scoreList.push({player: player, points: parseInt(points)}); 
+    return scoreList;
+}
