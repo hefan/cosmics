@@ -7,7 +7,28 @@ http.createServer(function (req, res) {
 
     var scoreList = [];
 
-    if  (req.url == "/cumul") { // cumulated version
+    if  (req.url == "/anon") { // anon version
+        var player = "";
+        var points = "";
+        xy = redisClient.zrevrange("anonscores", "0", "-1", "WITHSCORES", function (err, replies) {
+            var scoreEntry = {};
+            replies.forEach(function (reply, i) {
+                if ( (i%2) == 0) {  // the name in the even
+                        // first split is given name, second is session id, we need given name, split symbol is "_"
+                    scoreEntry.player = reply.split("_")[0];
+                }
+                else { // the score in the odd
+                    scoreEntry.points = reply;
+                    scoreList.push({player: scoreEntry.player, points: scoreEntry.points});  // push $
+                }
+            });
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+            res.write(JSON.stringify(scoreList));
+            res.end('\n');
+        });
+    }
+//--------------------------------------------------------------------------------------------------------------------------    
+    else if  (req.url == "/cumul") { // cumulated version
         var player = "";
         var points = "";
         xy = redisClient.zrevrange("scores", "0", "-1", "WITHSCORES", function (err, replies) {
