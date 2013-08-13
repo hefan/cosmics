@@ -1,3 +1,9 @@
+if(!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g,'');
+  };
+}
+
 var http = require('http'),
     redis = require("redis"),
 //    redisClient = redis.createClient();
@@ -75,6 +81,7 @@ http.createServer(function (req, res) {
 console.log('Server running at http://127.0.0.1:42424/');
 //--------------------------------------------------------------------------------------------------------------------------
 function addOrCumulPlayer(scoreList, player, points) {
+    player = player.trim();
     for(var i = 0; i < scoreList.length; i++) {
         if (scoreList[i].player == player) {
             scoreList[i].points += parseInt(points);
