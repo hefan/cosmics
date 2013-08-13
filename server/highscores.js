@@ -82,6 +82,7 @@ console.log('Server running at http://127.0.0.1:42424/');
 //--------------------------------------------------------------------------------------------------------------------------
 function addOrCumulPlayer(scoreList, player, points) {
     player = player.trim();
+    player = player.replace(/ +(?= )/g,'');
     for(var i = 0; i < scoreList.length; i++) {
         if (scoreList[i].player == player) {
             scoreList[i].points += parseInt(points);
