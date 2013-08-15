@@ -6,8 +6,7 @@ if(!String.prototype.trim) {
 
 var http = require('http'),
     redis = require("redis"),
-//    redisClient = redis.createClient();
-    redisClient = redis.createClient('/home/shartman/.redis/sock');
+    redisClient = redis.createClient();
 
 http.createServer(function (req, res) {
 
