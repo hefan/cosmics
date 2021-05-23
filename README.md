@@ -56,8 +56,8 @@ Without the server the solo client game will start automatically.
 
 #### Requirements
 
-- node.js (v8.16.2 tested)
-- npm (6.4.1 tested)
+- node.js (v8.16.2 and 10.24.1 tested)
+- npm (6.4.x tested)
 - Redis Server
 
 - socket.io v0.9 `npm install socket.io@0.9`
