@@ -10,13 +10,13 @@ Each spectator can help with balloons to fight the invaders (or irritate the her
 ----------------------------------
 ### Client
 
-The client consists of a hero-, a spectator- or a solo hero game. 
-If there is no server available the solo client game will start. 
+The client consists of a hero-, a spectator- or a solo hero game.
+If there is no server available the solo client game will start.
 The solo client game features only simulator-like graphics and no score.
 
 #### Requirements
 
-- Akihabara: 
+- Akihabara:
 
 A Great html5-game framework for creating 2d canvas games.
 https://github.com/kesiev/akihabara
@@ -56,11 +56,11 @@ Without the server the solo client game will start automatically.
 
 #### Requirements
 
-- node.js (v0.8.19 or above tested)
-- npm (v 1.2.10 or above tested)
+- node.js (v8.16.2 tested)
+- npm (6.4.1 tested)
 - Redis Server
 
-- socket.io `npm install socket.io`
+- socket.io v0.9 `npm install socket.io@0.9`
 - Redis `npm install redis`
 
 #### Setup

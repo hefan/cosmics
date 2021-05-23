@@ -54,7 +54,7 @@ function checkHeroVitalSign() {
     if ( timeGone >= heroTimeoutAt) {
       socket.sockets.socket(hero.id).emit("timeout");
       onGameOver(hero);
-    }  
+    }
     else if ( timeGone >= heroTimeoutWarnAt) {
       socket.sockets.socket(hero.id).emit("timeout warn");
     }
@@ -160,13 +160,13 @@ function onCommitCosmics(client) { // cosmics game started, tell hero about exis
 function removeHero(client) {
     // just act like game over
     onGameOver(client);
-}	
+}
 //---------------------------------------------------------------------------------------------
 function onPosHero(client) {
 //  util.log("hero with id "+client.id+" / "+client.x+" should be positioned");
   if (isHero(client.id)) {
       hero.setX(client.x);
-      this.broadcast.emit('pos hero', { id:hero.id, x:hero.getX() }); 
+      this.broadcast.emit('pos hero', { id:hero.id, x:hero.getX() });
   }
   else {
       util.log("HERO TO POSITION NOT FOUND");
@@ -176,7 +176,7 @@ function onPosHero(client) {
 function onJumpHero(client) {
   if (isHero(client.id)) {
       hero.jump();
-      this.broadcast.emit('jump hero', { id:hero.id }); 
+      this.broadcast.emit('jump hero', { id:hero.id });
   }
   else {
       util.log("HERO TO JUMP NOT FOUND");
@@ -186,7 +186,7 @@ function onJumpHero(client) {
 function onShootHero(client) {
   if (isHero(client.id)) {
       hero.shoot();
-      this.broadcast.emit('shoot hero', { id:hero.id }); 
+      this.broadcast.emit('shoot hero', { id:hero.id });
   }
   else {
       util.log("HERO TO SHOOT BULLET FROM NOT FOUND");
@@ -196,7 +196,7 @@ function onShootHero(client) {
 function onExplodeHero(client) {
   if (isHero(client.id)) {
       hero.explode();
-      this.broadcast.emit('explode hero', { id:hero.id }); 
+      this.broadcast.emit('explode hero', { id:hero.id });
   }
   else {
       util.log("HERO TO EXPLODE NOT FOUND");
@@ -206,7 +206,7 @@ function onExplodeHero(client) {
 function onGhostHero(client) {
   if (isHero(client.id)) {
       hero.ghost();
-      this.broadcast.emit('ghost hero', { id:hero.id }); 
+      this.broadcast.emit('ghost hero', { id:hero.id });
   }
   else {
       util.log("HERO TO GHOST NOT FOUND");
@@ -216,7 +216,7 @@ function onGhostHero(client) {
 function onNormalHero(client) {
   if (isHero(client.id)) {
       hero.normal();
-      this.broadcast.emit('normal hero', { id:hero.id }); 
+      this.broadcast.emit('normal hero', { id:hero.id });
   }
   else {
       util.log("HERO TO NORMALIZE NOT FOUND");
@@ -226,7 +226,7 @@ function onNormalHero(client) {
 function onFallHero(client) {
   if (isHero(client.id)) {
       hero.fall();
-      this.broadcast.emit('fall hero', { id:hero.id, x:client.x, dir:client.dir }); 
+      this.broadcast.emit('fall hero', { id:hero.id, x:client.x, dir:client.dir });
   }
   else {
       util.log("HERO TO FALL NOT FOUND");
@@ -237,30 +237,30 @@ function onFallHero(client) {
 function onFloorData(client) {
     if (hero != null) hero.setSign();
     floors = client;
-    this.broadcast.emit('floor data', floors); 
+    this.broadcast.emit('floor data', floors);
 }
 //---------------------------------------------------------------------------------------------
 function onMeteorApproach(client) {
     if (hero != null) hero.setSign();
-    this.broadcast.emit('meteor approach', { x: client.x, speed: client.speed }); 
+    this.broadcast.emit('meteor approach', { x: client.x, speed: client.speed });
 }
 
 //---------------------------------------------------------------------------------------------
 function onRocketApproach(client) {
     if (hero != null) hero.setSign();
-    this.broadcast.emit('rocket approach', { rocketType: client.rocketType, airSpeed: client.airSpeed, groundSpeed: client.groundSpeed }); 
+    this.broadcast.emit('rocket approach', { rocketType: client.rocketType, airSpeed: client.airSpeed, groundSpeed: client.groundSpeed });
 }
 
 //---------------------------------------------------------------------------------------------
 function onBombApproach(client) {
     if (hero != null) hero.setSign();
-    this.broadcast.emit('bomb approach', { x: client.x, speed: client.speed }); 
+    this.broadcast.emit('bomb approach', { x: client.x, speed: client.speed });
 }
 
 //---------------------------------------------------------------------------------------------
 function onAmmoApproach(client) {
     if (hero != null) hero.setSign();
-    this.broadcast.emit('ammo approach', { x: client.x, dirX: client.dirX, dirY: client.dirY, speed: client.speed }); 
+    this.broadcast.emit('ammo approach', { x: client.x, dirX: client.dirX, dirY: client.dirY, speed: client.speed });
 }
 
 //---------------------------------------------------------------------------------------------
@@ -268,20 +268,20 @@ function onAmmoApproach(client) {
 function onGameOver(client) {
     util.log("game over: "+client.id);
     if (isHero(client.id)) {
-      
+
       // tell spectators about hero
-      socket.sockets.emit('remove hero', { id:client.id }); 
+      socket.sockets.emit('remove hero', { id:client.id });
       hero = null;
 
       // tell first spectator he should be a hero now
       fs = firstSpectator();
-      if (fs != null) socket.sockets.socket(fs.id).emit("be hero"); 
+      if (fs != null) socket.sockets.socket(fs.id).emit("be hero");
 
       // tell other spectators the game is over and they are gonna get by the invaders
       for (i=0; i < spectators.length; i++) {
           if (spectators[i].id != fs.id) {
             socket.sockets.socket(spectators[i].id).emit("get caught");
-          }  
+          }
       }
       saveAnonHighscore(client.id, client.score);
     }
@@ -291,7 +291,7 @@ function onGameOver(client) {
 }
 //---------------------------------------------------------------------------------------------
 function createSpectator(client) { // init spectator and give id to client
-  socket.sockets.socket(client.id).emit("init spectator", { id:client.id } ); 
+  socket.sockets.socket(client.id).emit("init spectator", { id:client.id } );
   util.log("spectator with id "+client.id+" connected");
 //  logSpectators();
 }
@@ -322,7 +322,7 @@ function onCommitSpectator(client) { // spectator game started
   if (hero !== null ) this.emit("new hero", { id: hero.id, x:hero.getX() });
 
   // tell new spectator about condition of the floor
-  this.emit('floor data', floors); 
+  this.emit('floor data', floors);
 
 	spectators.push(spectator);
   logSpectators();
@@ -379,7 +379,7 @@ function onExplodeSpectator(client) {
   // tell all spectators about their queue positions
   var i;
   for (i=0; i < spectators.length; i++) {
-      socket.sockets.socket(spectators[i].id).emit('set queuepos', { pos:spectators[i].getPos() } ); 
+      socket.sockets.socket(spectators[i].id).emit('set queuepos', { pos:spectators[i].getPos() } );
   };
   logSpectators();
 }
@@ -407,11 +407,11 @@ function removeSpectator(client) {
   //tell spectators their new pos in queue
   var i;
   for (i=0; i < spectators.length; i++) {
-      socket.sockets.socket(spectators[i].id).emit('set queuepos', { pos:spectators[i].getPos() } ); 
+      socket.sockets.socket(spectators[i].id).emit('set queuepos', { pos:spectators[i].getPos() } );
   };
   client.broadcast.emit('remove spectator', { id:spectator.id } );
 	logSpectators();
-}	
+}
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
@@ -420,11 +420,11 @@ function removeSpectator(client) {
 //---------------------------------------------------------------------------------------------
 function checkHeroFingerprint(fp) {
     // old fingerprint, do not allow same fp if no timeout occured for current fingerprint
-    if (fp == currentFingerprint) { 
+    if (fp == currentFingerprint) {
         var timeGone = (new Date().getTime() - lastFingerprintAt);
         if (timeGone >= fingerprintTimeoutAt) {
             // renew fpAt
-            lastFingerprintAt = new Date().getTime();      
+            lastFingerprintAt = new Date().getTime();
             return true
         }
         return false; // reloaded too fast
@@ -477,11 +477,11 @@ function logSpectators() {
 function saveAnonHighscore(id, score) {
 //  util.log("id "+id+" has score: "+score);
   redisClient.zadd("anonscores", score, id, redis.print);
-}  
+}
 //---------------------------------------------------------------------------------------------
 function onSubmitHighscoreName(client) {
 //  util.log("submit highscore name for id "+client.id+", with name: "+client.name);
-  
+
   idScore = redisClient.zscore("anonscores", client.id, function (err, retval) {
 //    util.log("found score: "+retval);
     if (retval >= 1) {
@@ -491,12 +491,11 @@ function onSubmitHighscoreName(client) {
       // send rank back to client
       redisClient.zrevrank("scores", client.name+"_"+client.id, function (err, rank) {
         if (rank >= 0) {  // rank 0 means 1st place
-          socket.sockets.socket(client.id).emit("show rank", { rank:rank + 1 }); 
+          socket.sockets.socket(client.id).emit("show rank", { rank:rank + 1 });
         }
       });
     }
   });
-}  
+}
 
 init();
-
